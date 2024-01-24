@@ -1,0 +1,5 @@
+==================
+collective.memleak
+==================
+
+User documentation
