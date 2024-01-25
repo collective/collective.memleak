@@ -1,0 +1,20 @@
+{
+  "name": "collective.memleak",
+  "version": "1.0.0",
+  "description": ".. This README is meant for consumption by humans and PyPI. PyPI can render rst files so please do not use Sphinx features.    If you want to learn more about writing documentation, please check out: http://docs.plone.org/about/documentation_styleguide.html    This text does not appear on PyPI or github. It is a comment.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "dependencies": {
+    "@viz-js/viz": "^3.2.4",
+    "browserify": "^17.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-js": "browserify ./src/collective/memleak/browser/static/index.js --standalone viz -o ./src/collective/memleak/browser/static/bundle.js"
+  },
+  "author": "",
+  "license": "ISC"
+}

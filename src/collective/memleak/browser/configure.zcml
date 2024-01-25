@@ -5,17 +5,24 @@
     i18n_domain="collective.memleak">
 
   <!-- Set overrides folder for Just-a-Bunch-Of-Templates product -->
-  <include package="z3c.jbot" file="meta.zcml" />
+  <!-- <include package="z3c.jbot" file="meta.zcml" />
   <browser:jbot
       directory="overrides"
       layer="collective.memleak.interfaces.ICollectiveMemleakLayer"
-      />
+      /> -->
 
   <!-- Publish static files -->
-  <plone:static
+  <browser:resourceDirectory
       name="collective.memleak"
-      type="plone"
       directory="static"
       />
+
+    <browser:page
+            for="*"
+            name="memview"
+            permission="cmf.ManagePortal"
+            class=".view.MemView"
+            />      
+
 
 </configure>

@@ -1,0 +1,22 @@
+<html xmlns:tal="http://xml.zope.org/namespaces/tal">
+<head>
+<script src="./++resource++collective.memleak/bundle.js"/>
+<script tal:condition="request/target | nothing" >
+    viz.showGraph(`<span tal:replace="structure view/chain"/>`, "chain")
+    viz.showGraph(`<span tal:replace="structure view/backrefs"/>`, "backrefs")
+</script>
+</head>
+<body>
+<div>
+<div  id="chain"/>
+<div  id="backrefs"/>
+<form action="memview" method="get"><input name="filter" value="${request/filter | nothing}"><input type=submit name="Filter"/></form>
+<table style="float:left">
+<tr><th>type</th><th><a href="?sort=">count</a></th><th><a href="?sort=diff">diff</a></th></tr>
+<tr tal:repeat="line view/top_counts">
+<td><a href="./memview?target=${line/name}">${line/name}</a></td><td>${line/count}</td><td><span tal:condition="python: line['diff'] and line['diff'] > 0">+</span>${line/diff}</td>
+</tr>
+</table>
+</div>
+</body>
+</html>
