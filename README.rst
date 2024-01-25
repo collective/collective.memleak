@@ -36,9 +36,10 @@ Help locate memory leaks in a zope/plone site using objgraph
 Features
 --------
 
-- Shows [most common types](https://mg.pov.lt/objgraph/objgraph.html#objgraph.most_common_types) and types growing since.
+- Shows [most common types](https://mg.pov.lt/objgraph/objgraph.html#objgraph.most_common_types) and types growing.
 - shows objgraph [find_backref_chain](https://mg.pov.lt/objgraph/objgraph.html#objgraph.find_backref_chain) and 
-  [show_backrefs](https://mg.pov.lt/objgraph/objgraph.html#objgraph.show_backrefs) to what might be holding on leaking objects
+  [show_backrefs](https://mg.pov.lt/objgraph/objgraph.html#objgraph.show_backrefs) of random objects of selected type
+  to help give clues on objects holding references.
 
 
 Documentation
