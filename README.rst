@@ -31,33 +31,19 @@
 collective.memleak
 ==================
 
-Help locate memleaks using objgraph
+Help locate memory leaks in a zope/plone site using objgraph
 
 Features
 --------
 
-- Can be bullet points
-
-
-Examples
---------
-
-This add-on can be seen in action at the following sites:
-- Is there a page on the internet where everybody can see the features?
+- Shows types with the most instances and recently created
+- shows objgraph find_backref_chain and show_backrefs to what might be holding on leaking objects
 
 
 Documentation
 -------------
 
-Full documentation for end users can be found in the "docs" folder, and is also available online at http://docs.plone.org/foo/bar
-
-
-Translations
-------------
-
-This product has been translated into
-
-- Klingon (thanks, K'Plai)
+Access via  ```/memview``` on your site.
 
 
 Installation
@@ -85,9 +71,7 @@ Provided by awesome people ;)
 Contributors
 ------------
 
-Put your name here, you deserve it!
-
-- ?
+- Dylan Jay (PretaGov)
 
 
 Contribute
@@ -95,7 +79,6 @@ Contribute
 
 - Issue Tracker: https://github.com/collective/collective.memleak/issues
 - Source Code: https://github.com/collective/collective.memleak
-- Documentation: https://docs.plone.org/foo/bar
 
 
 Support
