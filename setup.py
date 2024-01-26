@@ -60,8 +60,8 @@ setup(
         # "z3c.jbot",
         # "plone.api>=1.8.4",
         # "plone.app.dexterity",
-        "objgraph",
-        "graphviz",
+        "objgraph <= 3.5.0",
+        "graphviz == 0.16",
     ],
     extras_require={
         "test": [
