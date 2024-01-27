@@ -6,13 +6,6 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 import io
 
 
-def fullname(o):
-    module = o.__class__.__module__
-    if module is None or module == str.__class__.__module__:
-        return o.__class__.__name__
-    return str(module) + "." + str(o.__class__.__name__)
-
-
 class MemView(BrowserView):
     def __init__(self, context, request):
         self.request = request
@@ -25,7 +18,7 @@ class MemView(BrowserView):
         filterq = self.request.get("filter", "")
 
         def filter(obj):
-            name = fullname(obj)
+            name = objgraph._long_typename(obj)
             return filterq in name
 
         diffs = {
