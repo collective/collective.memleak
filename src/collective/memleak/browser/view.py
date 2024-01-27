@@ -3,15 +3,12 @@ import random
 import objgraph
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-import io
-
-
-def fullname(o):
-    module = o.__class__.__module__
-    if module is None or module == str.__class__.__module__:
-        return o.__class__.__name__
-    return str(module) + "." + str(o.__class__.__name__)
-
+try:
+    # Python 2
+    from cStringIO import StringIO
+except ImportError:
+    # Python 3
+    from io import StringIO
 
 class MemView(BrowserView):
     def __init__(self, context, request):
@@ -25,7 +22,7 @@ class MemView(BrowserView):
         filterq = self.request.get("filter", "")
 
         def filter(obj):
-            name = fullname(obj)
+            name = objgraph._long_typename(obj)
             return filterq in name
 
         diffs = {
@@ -48,20 +45,26 @@ class MemView(BrowserView):
 
     def backrefs(self):
         target = self.request.target
-        with io.StringIO() as fp:
+        fp = StringIO()
+        try:
             objgraph.show_backrefs(
                 random.choice(objgraph.by_type(target)), max_depth=5, output=fp
             )
-            return self.quotedot(fp)
+        except IndexError:
+            return ""
+        return self.quotedot(fp)
 
     def chain(self):
         target = self.request.target
-        chain = objgraph.find_backref_chain(
-            random.choice(objgraph.by_type(target)), objgraph.is_proper_module
-        )
-        with io.StringIO() as fp:
-            objgraph.show_chain(chain, output=fp)
-            return self.quotedot(fp)
+        try:
+            chain = objgraph.find_backref_chain(
+                random.choice(objgraph.by_type(target)), objgraph.is_proper_module
+            )
+        except IndexError:
+            return ""
+        fp = StringIO()
+        objgraph.show_chain(chain, output=fp)
+        return self.quotedot(fp)
 
     def chain_png(self):
         target = self.request.target

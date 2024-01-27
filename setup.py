@@ -61,7 +61,7 @@ setup(
         # "plone.api>=1.8.4",
         # "plone.app.dexterity",
         "objgraph",
-        "graphviz",
+        # "graphviz",
     ],
     extras_require={
         "test": [
