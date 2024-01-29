@@ -3,15 +3,12 @@ import random
 import objgraph
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-import io
-
-
-def fullname(o):
-    module = o.__class__.__module__
-    if module is None or module == str.__class__.__module__:
-        return o.__class__.__name__
-    return str(module) + "." + str(o.__class__.__name__)
-
+try:
+    # Python 2
+    from cStringIO import StringIO
+except ImportError:
+    # Python 3
+    from io import StringIO
 
 class MemView(BrowserView):
     def __init__(self, context, request):
@@ -25,7 +22,7 @@ class MemView(BrowserView):
         filterq = self.request.get("filter", "")
 
         def filter(obj):
-            name = fullname(obj)
+            name = objgraph._long_typename(obj)
             return filterq in name
 
         diffs = {
@@ -46,22 +43,43 @@ class MemView(BrowserView):
             )
         return common
 
-    def backrefs(self):
+    def url(self, obj):
+        sort = self.request.get("sort")
+        filter = self.request.get("filter")
+        name = objgraph._long_typename(obj)
+        target = "{}|{}".format(hex(id(obj)), name)
+        return dict(URL="./memview?sort={}&filter={}&target={}".format(sort, filter, target))
+    
+    def get_obj(self):
         target = self.request.target
-        with io.StringIO() as fp:
+        if target[:2] == '0x':
+            id, _type = target.split("|")
+            id = int(id, 16)
+            return objgraph.at(id) if objgraph.at(id) is not None else random.choice(objgraph.by_type(_type))
+        else:
+            return random.choice(objgraph.by_type(target))
+
+    def backrefs(self):
+
+        fp = StringIO()
+        try:
             objgraph.show_backrefs(
-                random.choice(objgraph.by_type(target)), max_depth=5, output=fp
+                self.get_obj(), max_depth=3, output=fp, extra_node_attrs=self.url
             )
-            return self.quotedot(fp)
+        except IndexError:
+            return ""
+        return self.quotedot(fp)
 
     def chain(self):
-        target = self.request.target
-        chain = objgraph.find_backref_chain(
-            random.choice(objgraph.by_type(target)), objgraph.is_proper_module
-        )
-        with io.StringIO() as fp:
-            objgraph.show_chain(chain, output=fp)
-            return self.quotedot(fp)
+        try:
+            chain = objgraph.find_backref_chain(
+                self.get_obj(), objgraph.is_proper_module,
+            )
+        except IndexError:
+            return ""
+        fp = StringIO()
+        objgraph.show_chain(chain, output=fp, extra_node_attrs=self.url)
+        return self.quotedot(fp)
 
     def chain_png(self):
         target = self.request.target

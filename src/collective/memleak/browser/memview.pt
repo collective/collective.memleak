@@ -8,15 +8,22 @@
 </head>
 <body>
 <div>
+<div tal:condition="request/target | nothing">
+<a href="./memview?filter=${request/filter|nothing}&sort=${request/sort|nothing}">Back</a>
+<h2>Chain</h2>
 <div  id="chain"/>
+<h2>Backrefs</h2>
 <div  id="backrefs"/>
+</div>
+<div tal:condition="not: request/target | nothing">
 <form action="memview" method="get"><input name="filter" value="${request/filter | nothing}"><input type=submit name="Filter"/></form>
 <table style="float:left">
 <tr><th>type</th><th><a href="?sort=">count</a></th><th><a href="?sort=diff">diff</a></th></tr>
 <tr tal:repeat="line view/top_counts">
-<td><a href="./memview?target=${line/name}">${line/name}</a></td><td>${line/count}</td><td><span tal:condition="python: line['diff'] and line['diff'] > 0">+</span>${line/diff}</td>
+<td><a href="./memview?target=${line/name}&filter=${request/filter|nothing}&sort=${request/sort|nothing}">${line/name}</a></td><td>${line/count}</td><td><span tal:condition="python: line['diff'] and line['diff'] > 0">+</span>${line/diff}</td>
 </tr>
 </table>
+</div>
 </div>
 </body>
 </html>
