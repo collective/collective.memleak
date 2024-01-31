@@ -1,3 +1,4 @@
+import pprint
 import tempfile
 import random
 import objgraph
@@ -61,6 +62,13 @@ class MemView(BrowserView):
             return objgraph.at(id) if objgraph.at(id) is not None else random.choice(objgraph.by_type(_type))
         else:
             return random.choice(objgraph.by_type(target))
+
+    def get_repr(self):
+        target = self.request.target
+        if target[:2] == '0x':
+            return pprint.pformat(self.get_obj(), indent=4)
+        else:
+            return ""
 
     def backrefs(self):
 

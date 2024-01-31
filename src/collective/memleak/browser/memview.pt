@@ -8,6 +8,7 @@
 <a href="./memview?filter=${request/filter|nothing}&sort=${request/sort|nothing}">Back</a>
 <a href="${view/url}">Chain</a>
 <a href="${view/url}&backrefs=true">BackRefs</a>
+<pre tal:condition="view/get_repr"><span tal:replace="view/get_repr"></span></pre>
 <div tal:condition="not: request/backrefs | nothing">
     <script tal:condition="request/target | nothing" >
         viz.showGraph(`<span tal:replace="structure view/chain"/>`, "chain")
