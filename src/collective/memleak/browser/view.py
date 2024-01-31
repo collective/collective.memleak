@@ -43,12 +43,15 @@ class MemView(BrowserView):
             )
         return common
 
-    def url(self, obj):
+    def url(self, obj=None):
         sort = self.request.get("sort")
         filter = self.request.get("filter")
-        name = objgraph._long_typename(obj)
-        target = "{}|{}".format(hex(id(obj)), name)
-        return dict(URL="./memview?sort={}&filter={}&target={}".format(sort, filter, target))
+        if obj is not None:
+            name = objgraph._long_typename(obj)
+            target = "{}|{}".format(hex(id(obj)), name)
+        else:
+            target = self.request.get("target", "")
+        return "./memview?sort={}&filter={}&target={}".format(sort, filter, target)
     
     def get_obj(self):
         target = self.request.target
@@ -64,7 +67,7 @@ class MemView(BrowserView):
         fp = StringIO()
         try:
             objgraph.show_backrefs(
-                self.get_obj(), max_depth=3, output=fp, extra_node_attrs=self.url
+                self.get_obj(), max_depth=3, output=fp, extra_node_attrs=lambda x: dict(URL=self.url(x))
             )
         except IndexError:
             return ""
@@ -78,7 +81,7 @@ class MemView(BrowserView):
         except IndexError:
             return ""
         fp = StringIO()
-        objgraph.show_chain(chain, output=fp, extra_node_attrs=self.url)
+        objgraph.show_chain(chain, output=fp, extra_node_attrs=lambda x: dict(URL=self.url(x)))
         return self.quotedot(fp)
 
     def chain_png(self):
