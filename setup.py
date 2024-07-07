@@ -53,15 +53,18 @@ setup(
     package_dir={"": "src"},
     include_package_data=True,
     zip_safe=False,
-    python_requires=">=3.7",
+    python_requires=">=2.7",
     install_requires=[
         "setuptools",
         # -*- Extra requirements: -*-
         # "z3c.jbot",
         # "plone.api>=1.8.4",
         # "plone.app.dexterity",
-        "objgraph <= 3.5.0",
-        "graphviz == 0.16",
+        'objgraph',
+        'objgraph <= 3.5.0; python_version<"3.0"',
+        # "graphviz == 0.16",
+        'guppy; python_version<"3.0"',
+        'guppy3; python_version>="3.0"',
     ],
     extras_require={
         "test": [

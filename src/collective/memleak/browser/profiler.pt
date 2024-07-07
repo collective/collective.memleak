@@ -1,0 +1,30 @@
+
+
+<h1 tal:replace="structure here/manage_page_header">Header</h1>
+
+<span tal:define="manage_tabs_message options/manage_tabs_message | nothing"
+  tal:replace="structure here/manage_tabs">Tabs</span>
+
+<h2 tal:define="form_title string:View MemoryProfiler - Overview of Memory" 
+  tal:replace="structure here/manage_form_title">Form Title</h2>
+<form action="memprof" method="POST" >
+  <input name="start" class="form-element form-text" type="submit" value="start" tal:condition="not:view/status"  />
+  <input name="stop" class="form-element form-text" type="submit" value="stop" tal:condition="view/status" />
+  <input name="clear" class="form-element form-text" type="submit" value="clear" />
+  <input name="clear" class="form-element form-text" type="submit" value="clear db cache" />
+  <input name="updateSnapshot" class="form-element form-text" type="submit" value="updateSnapshot" />
+  <label for="index:int">Index :</label><input size="3" type="text" name="index:int" class="" value="0">
+  <label for="depth:int">Depth :</label><input size="3" type="text" name="depth:int" class="" value="2">
+  <label for="limit:int">Limit :</label><input size="3" type="text" name="limit:int" class="" value="10">
+  <input  name="referenceDetail" class="form-element form-text" type="submit" value="reference detail" />
+
+<ul>
+  <tal:repeat repeat="item view/datas">
+    <li><a tal:attributes="href string:memprof?showStatistic&key=${item/time}"><span tal:content="item/times" /></a>&nbsp;<strong tal:content="python:'%0.2f Mega' % item['size'] " tal:condition="item/size"/> </li>
+  </tal:repeat>
+</ul>
+<pre tal:content="view/getStatistics"> </pre>
+</form>
+
+
+<h1 tal:replace="structure here/manage_page_footer">Footer</h1>

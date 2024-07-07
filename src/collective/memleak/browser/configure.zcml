@@ -17,12 +17,18 @@
       directory="static"
       />
 
-    <browser:page
-            for="*"
-            name="memview"
-            permission="cmf.ManagePortal"
-            class=".view.MemView"
-            />      
+  <browser:page
+          for="*"
+          name="memview"
+          permission="cmf.ManagePortal"
+          class=".view.MemView"
+          />      
 
+  <browser:page
+          for="*"
+          name="memprof"
+          permission="cmf.ManagePortal"
+          class=".profiler.Profiler"
+          />      
 
 </configure>
